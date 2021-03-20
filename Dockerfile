@@ -3,6 +3,9 @@ FROM centos:6
 
 RUN echo "NETWORKING=yes" > /etc/sysconfig/network
 
+# ssl
+RUN yum install -y certbot certonly
+RUN certbot certonly -d fsboard.gq --standalone -n --agree-tos -m usheynet@gmail.com
 
 
 # mysql
