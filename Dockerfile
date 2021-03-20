@@ -29,7 +29,7 @@ RUN service ntpd start
 RUN rpm -ihv http://installrepo.kaltura.org/releases/kaltura-release.noarch.rpm
 RUN yum install -y kaltura-server
 
-ADD docker/install/* /root/install/
+COPY docker/install/* /root/install/
 RUN chmod +x /root/install/install.sh
 
 EXPOSE 80 443 1935 88 8443
