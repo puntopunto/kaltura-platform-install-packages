@@ -19,7 +19,7 @@ FROM docker.io/certbot/certbot
 # import
 FROM docker.io/percona:5.6.51
 RUN mysql_install_db
-COPY /root/install/percona-mysql56-server.service /etc/systemd/system/mysql.service
+COPY docker/install/percona-mysql56-server.service /etc/systemd/system/mysql.service
 RUN systemctl enable --now mysql
 RUN systemctl restart mysql
 
