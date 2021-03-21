@@ -1,46 +1,47 @@
 # Main image build file
 
+## SYSTEM
+# base
 FROM centos:7
+
+# networking
 RUN echo "NETWORKING=yes" > /etc/sysconfig/network
 
-## basic prepare - TODO
-# timezone
-# locale to default
-RUN localectl set-locale C
+# date and locale
+#RUN localectl set-locale C - wrong/fix
+#RUN timedatectl set-timezone - $(???)
 
-## repos
-# EPEL
-#RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-# RPM Fusion
-#RUN yum localinstall --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && yum install rpmfusion-free-release-tainted rpmfusion-nonfree-release-tainted
+## SSL (hardcocded for now, fix)
+FROM docker.io/certbot/certbot
+RUN certbot certonly -d fsboard.gq --standalone -n --agree-tos -m usheynet@gmail.com
 
-## ssl
-#RUN yum install -y certbot
-#RUN certbot certonly -d fsboard.gq --standalone -n --agree-tos -m usheynet@gmail.com
+## INSTALLER FILES - STAGE 1
+# import platform installer and common files
+COPY docker/install/* /root/install/
 
-## mysql
-RUN yum install -y mysql mysql-server
+## MYSQL
+# import
+FROM docker.io/percona:5.6.51
 RUN mysql_install_db
-RUN chkconfig mysqld on
-RUN service mysqld start
+COPY /root/install/percona-mysql56-server.service /etc/systemd/system/mysql.service
+RUN systemctl enable --now mysql
+RUN systemctl restart mysql
 
-## facilities
+## FACILITIES
 RUN yum install -y postfix memcached ntp
-RUN chkconfig postfix on
-RUN chkconfig memcached on
-RUN chkconfig ntpd on
-RUN service postfix start
-RUN service memcached start
-RUN service ntpd start
+RUN systemctl enable --now postfix memcached ntpd
+RUN systemctl restart postfix memcached ntpd
 
-## kaltura
+## PRE-INSTALL KALTURA-SERVER
 RUN rpm -ihv http://installrepo.kaltura.org/releases/kaltura-release.noarch.rpm
 RUN yum install -y kaltura-server
 
-COPY docker/install/* /root/install/
+## SET PERMISSIONS & ACCESS
+# installer permissions
 RUN chmod +x /root/install/install.sh
-
+# web access
 EXPOSE 80 443 1935 88 8443
 
-## start services
+## ENTRYPOINT
+# start services
 CMD ["/sbin/init"]
