@@ -37,38 +37,39 @@ RED5_HOST="fsboard.gq"
 # 0 - prevent
 USER_CONSENT=1
 # SSL cert path
-CRT_FILE=/etc/ssl/certs/localhost.crt
+CRT_FILE=/etc/pki/tls/certs/localhost.crt
 # SSL key path
 KEY_FILE=/etc/pki/tls/private/localhost.key
 # if such exists enter path here, otherwise leave as is.
-CHAIN_FILE=NONE
+CHAIN_FILE=/merged/etc/pki/tls/certs/ca-bundle.crt
 # Operational DB MySQL
-DB1_HOST="@MYSQL_HOST@"
+DB1_HOST="127.0.0.1"
 # MySQL PORT
-DB1_PORT="@MYSQL_PORT@"
+DB1_PORT="3306"
 # desired passwd, make it good.
-DB1_PASS="@KALT_DB_PASS@"
+DB1_PASS="Mass0"
 # analytics MySQL DB
-DWH_HOST="@MYSQL_HOST@"
+DWH_HOST="127.0.0.1"
 # analytics MySQL port
-DWH_PORT="@MYSQL_PORT@"
+DWH_PORT="3306"
 # analytics MySQL port
-DWH_PASS="@KALT_DB_PASS@"
+DWH_PASS="Mass0"
 # MySQL super user, this is only used for bootstrap, the app itself will not connect with it.
-SUPER_USER="@MYSQL_SUPER_USER@"
-SUPER_USER_PASSWD="@MYSQL_SUPER_USER_PASSWD@"
+SUPER_USER="root"
+SUPER_USER_PASSWD="Mass0"
 # For nginx packager module
-VOD_PACKAGER_HOST="@NGINX_HOST@"
-VOD_PACKAGER_PORT="@NGINX_PORT@"
+VOD_PACKAGER_HOST="fsboard.gq"
+VOD_PACKAGER_PORT="88"
 # whether or not to configure Nginx over SSL
-IS_NGINX_SSL="y"
+IS_NGINX_SSL="Y"
 # path to SSL cert
-SSL_CERT=""/etc/ssl/certs/localhost.crt"
+# Using certs var for testing only, this wrong, fix on production
+SSL_CERT="$CRT_FILE"
 # path to SSL key
-# SSL_KEY
+SSL_KEY="$KEY_FILE"
 # NGINX SSL PORT - note, if you have Apache running over SSL as well and on port 443, do not select 443 here too
-# VOD_PACKAGER_SSL_PORT=8443
-WWW_HOST="fsboard.gq"
+VOD_PACKAGER_SSL_PORT=8443
+WWW_HOST="https://www.fsboard.gq"
 # Range of ip addresses belonging to internal kaltura servers
 # The range is used when checking service actions permissions and allowing to access certain services without KS from the internal servers.
 # The default is only good for testing, on a production ENV you should adjust according to your network.
