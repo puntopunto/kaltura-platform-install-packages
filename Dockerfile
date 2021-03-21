@@ -3,6 +3,9 @@ FROM centos:6
 
 RUN echo "NETWORKING=yes" > /etc/sysconfig/network
 
+# ssl
+RUN yum install -y certbot certonly
+RUN certbot certonly -d fsboard.gq --nginx --apache --standalone -n --agree-tos -m usheynet@gmail.com
 
 
 # mysql
@@ -13,22 +16,20 @@ RUN service mysqld start
 
 
 # facilities
-RUN yum install -y postfix ntp
+RUN yum install -y postfix memcached ntp
 RUN chkconfig postfix on
+RUN chkconfig memcached on
 RUN chkconfig ntpd on
-RUN sed -i 's@^inet_protocols = all@inet_protocol = ipv4@g' /etc/postfix/main.cf
 RUN service postfix start
+RUN service memcached start
 RUN service ntpd start
 
-# EPEL
-RUN rpm -ihv https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+
 # kaltura
 RUN rpm -ihv http://installrepo.kaltura.org/releases/kaltura-release.noarch.rpm
-RUN sed -i 's@installrepo.kaltura.org@installrepo.origin.kaltura.org@g' /etc/yum.repos.d/kaltura.repo
-RUN sed -i 's@^tsflags=nodocs@#tsflags=nodocs@g' /etc/yum.conf
 RUN yum install -y kaltura-server
 
-ADD docker/install/* /root/install/
+COPY docker/install/* /root/install/
 RUN chmod +x /root/install/install.sh
 
 EXPOSE 80 443 1935 88 8443
