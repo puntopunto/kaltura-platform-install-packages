@@ -13,11 +13,7 @@ RUN echo "NETWORKING=yes" > /etc/sysconfig/network
 
 ## SSL (hardcocded for now, fix)
 FROM docker.io/certbot/certbot
-RUN certbot certonly -d fsboard.gq --standalone -n --agree-tos -m usheynet@gmail.com
-
-## INSTALLER FILES - STAGE 1
-# import platform installer and common files
-COPY docker/install/* /root/install/
+#RUN certbot certonly -d fsboard.gq --standalone -n --agree-tos -m usheynet@gmail.com
 
 ## MYSQL
 # import
@@ -32,9 +28,12 @@ RUN yum install -y postfix memcached ntp
 RUN systemctl enable --now postfix memcached ntpd
 RUN systemctl restart postfix memcached ntpd
 
-## PRE-INSTALL KALTURA-SERVER
+## KALTURA-SERVER
+# install rpm
 RUN rpm -ihv http://installrepo.kaltura.org/releases/kaltura-release.noarch.rpm
 RUN yum install -y kaltura-server
+# import platform installer and common files
+COPY docker/install/* /root/install/
 
 ## SET PERMISSIONS & ACCESS
 # installer permissions
