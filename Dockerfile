@@ -5,7 +5,7 @@ RUN echo "NETWORKING=yes" > /etc/sysconfig/network
 
 # ssl
 RUN yum install -y certbot certonly
-RUN certbot certonly -d fsboard.gq --standalone -n --agree-tos -m usheynet@gmail.com
+RUN certbot certonly -d fsboard.gq --nginx --apache --standalone -n --agree-tos -m usheynet@gmail.com
 
 
 # mysql
