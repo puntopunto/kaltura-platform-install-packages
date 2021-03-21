@@ -1,15 +1,15 @@
 # local TZ to be used by PHP code. Note that it MUST be the same as your DB TZ.
 TIME_ZONE="Europe/Moscow"
 # Apache port
-KALTURA_VIRTUAL_HOST_PORT="443"
+KALTURA_VIRTUAL_HOST_PORT="80"
 KALTURA_VIRTUAL_HOST_NAME="fsboard.gq"
 # host and port
-KALTURA_FULL_VIRTUAL_HOST_NAME="$KALTURA_VIRTUAL_HOST_NAME:$KALTURA_VIRTUAL_HOST_PORT"
+KALTURA_FULL_VIRTUAL_HOST_NAME="$KALTURA_VIRTUAL_HOST_NAME':'$KALTURA_VIRTUAL_HOST_PORT"
 # operational DB user and passwd
 DB1_NAME="kaltura"
 DB1_USER="kaltura"
-PROTOCOL="https"
-SERVICE_URL="$PROTOCOL://$KALTURA_FULL_VIRTUAL_HOST_NAME"
+PROTOCOL="http"
+SERVICE_URL="$PROTOCOL'://'$KALTURA_FULL_VIRTUAL_HOST_NAME"
 SPHINX_SERVER1="fsboard.gq"
 SPHINX_SERVER2=" "
 SPHINX_DB_HOST="fsboard.gq"
@@ -19,7 +19,7 @@ ADMIN_CONSOLE_ADMIN_MAIL="usheynet@gmail.com"
 # passwd for the Kaltura Admin Console
 ADMIN_CONSOLE_PASSWORD="Commie001!"
 # for installs that have no remote CDN storage, use the same as $KALTURA_VIRTUAL_HOST_NAME
-CDN_HOST=$KALTURA_VIRTUAL_HOST_NAME
+CDN_HOST="$KALTURA_VIRTUAL_HOST_NAME"
 # ( I'm using this var :) )
 # display name used when sending the 'welcome' mail.
 ENVIRONMENT_NAME="FSBoard"
@@ -29,17 +29,17 @@ ENVIRONMENT_NAME="FSBoard"
 # 2 - KAC - Kaltura Admin Console
 CONFIG_CHOICE="0"
 # are we working over SSL? needed since, if so, we perform cert validity checks
-IS_SSL="Y"
+IS_SSL="N"
 # hostname for Red5
 RED5_HOST="fsboard.gq"
 # allow the install scripts to send install data for analytics and support purposes:
 # 1 - allow
 # 0 - prevent
-USER_CONSENT=1
+USER_CONSENT="1"
 # SSL cert path
-CRT_FILE=/etc/pki/tls/certs/localhost.crt
+CRT_FILE="/etc/pki/tls/certs/localhost.crt"
 # SSL key path
-KEY_FILE=/etc/pki/tls/private/localhost.key
+KEY_FILE="/etc/pki/tls/private/localhost.key"
 # if such exists enter path here, otherwise leave as is.
 CHAIN_FILE=/merged/etc/pki/tls/certs/ca-bundle.crt
 # Operational DB MySQL
@@ -61,7 +61,7 @@ SUPER_USER_PASSWD="Mass0"
 VOD_PACKAGER_HOST="fsboard.gq"
 VOD_PACKAGER_PORT="88"
 # whether or not to configure Nginx over SSL
-IS_NGINX_SSL="Y"
+IS_NGINX_SSL="N"
 # path to SSL cert
 # Using certs var for testing only, this wrong, fix on production
 SSL_CERT="$CRT_FILE"
@@ -69,10 +69,10 @@ SSL_CERT="$CRT_FILE"
 SSL_KEY="$KEY_FILE"
 # NGINX SSL PORT - note, if you have Apache running over SSL as well and on port 443, do not select 443 here too
 VOD_PACKAGER_SSL_PORT=8443
-WWW_HOST="https://www.fsboard.gq"
+WWW_HOST="fsboard.gq"
 # Range of ip addresses belonging to internal kaltura servers
 # The range is used when checking service actions permissions and allowing to access certain services without KS from the internal servers.
 # The default is only good for testing, on a production ENV you should adjust according to your network.
 IP_RANGE="10.10.20.4-10.10.20.14"
 # Port to use with Nginx's RTMP module
-RTMP_PORT=1935
+RTMP_PORT="1935"
